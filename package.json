@@ -4,7 +4,7 @@
 	"description": "Set of tools for drizzle-orm.",
 	"scripts": {
 		"build": "tsup --dts --dts-resolve",
-		"test": "bun test ./src",
+		"test": "bun test src",
 		"check": "bunx @biomejs/biome check --apply ./src",
 		"release": "changeset publish"
 	},
