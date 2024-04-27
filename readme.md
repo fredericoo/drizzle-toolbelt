@@ -87,7 +87,7 @@ The final type will be:
 ```ts
 type Aggregated = {
   id: number;
-  // `post` ras removed
+  // `post` was removed
   // `posts` was added as an array of `post`
   posts: { id: number, …otherPostProperties }[]; 
 }
