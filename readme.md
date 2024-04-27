@@ -33,12 +33,14 @@ import { db } from "./db";
 import { users } from "./schema";
 import { takeFirstOrThrow } from "drizzle-toolbelt";
 
+const firstUserOrThrowDefault = await db.select().from(users)
+ .then(takeFirstOrThrow);
 
 const firstUserOrThrow = await db.select().from(users)
- .then(takeFirstOrThrow, "No users found");
+ .then(takeFirstOrThrow("No users found"));
 
 const firstUserOrThrowCustom = await db.select().from(users)
- .then(takeFirstOrThrow, new UnauthorizedError("You cannot view this page."));
+ .then(takeFirstOrThrow(new UnauthorizedError("You cannot view this page."))); 
  ```
 
 ### `aggregate`

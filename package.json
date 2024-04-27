@@ -8,25 +8,12 @@
 		"check": "bunx @biomejs/biome check --apply ./src",
 		"release": "changeset publish"
 	},
-	"keywords": [
-		"drizzle",
-		"orm",
-		"sql",
-		"sqlite",
-		"postgres",
-		"pg",
-		"postgresql",
-		"mysql",
-		"database",
-		"db"
-	],
+	"keywords": ["drizzle", "orm", "sql", "sqlite", "postgres", "pg", "postgresql", "mysql", "database", "db"],
 	"author": "fredericoo",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"license": "MIT",
-	"files": [
-		"/dist"
-	],
+	"files": ["/dist"],
 	"exports": {
 		".": {
 			"require": "./dist/index.js",
