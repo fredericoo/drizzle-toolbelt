@@ -26,22 +26,38 @@ const firstUserOrUndefined = await db.select().from(users)
 
 ### `takeFirstOrThrow`
 
-Takes first element from array or throws if no results.
+Takes first element from array or throws if length is zero.
+
+**With default error**
 
 ```ts
 import { db } from "./db";
 import { users } from "./schema";
 import { takeFirstOrThrow } from "drizzle-toolbelt";
 
-const firstUserOrThrowDefault = await db.select().from(users)
- .then(takeFirstOrThrow);
+const firstUserOrThrowDefault = await db
+  .select()
+  .from(users)
+  // throw inline
+  .then(takeFirstOrThrow());
 
-const firstUserOrThrow = await db.select().from(users)
- .then(takeFirstOrThrow("No users found"));
+// or
 
-const firstUserOrThrowCustom = await db.select().from(users)
- .then(takeFirstOrThrow(new UnauthorizedError("You cannot view this page."))); 
- ```
+// prepare errors
+const takeFirstOrError = takeFirstOrThrow();
+const takeFirstOrUnauthorized = takeFirstOrThrow(new UnauthorizedError("You cannot view this page."));
+
+// and pass it
+const firstUserOrThrow = await db
+  .select()
+  .from(users)
+  .then(takeFirstOrError);
+
+const firstUserOrUnauthorized = await db
+  .select()
+  .from(users)
+  .then(takeFirstOrUnauthorized);
+```
 
 ### `aggregate`
 
@@ -53,8 +69,7 @@ import { db } from "./db";
 import { users } from "./schema";
 import { aggregate } from "drizzle-toolbelt";
 
-
-const usersPosts = await db.select({
+const usersWithPosts = await db.select({
   id: users.id,
   post: posts
 }).from(users)
@@ -72,24 +87,34 @@ The final type will be:
 ```ts
 type Aggregated = {
   id: number;
-  posts: {id: number, …otherPostProperties}[];
+  // `post` ras removed
+  // `posts` was added as an array of `post`
+  posts: { id: number, …otherPostProperties }[]; 
 }
 ```
 
-### `aggregateRows`
+#### Data-first
 
-Data-first version of `aggregate` to be used stand-alone.
+You may choose to pass rows in the arguments to call `aggregate` in a stand-alone way.
 
 ```ts
 import { db } from "./db";
 import { users } from "./schema";
-import { aggregateRows } from "drizzle-toolbelt";
+import { aggregate } from "drizzle-toolbelt";
 
+const usersRows = await db.select({
+  id: users.id,
+  post: posts
+}).from(users)
+.leftJoin(posts.id, eq(posts.author_id, users.id))
 
-const usersCount = await db.select().from(users)
- .then(aggregateRows("count"));
+const usersWithPosts = aggregateRows({rows, pkey: 'id', fields: { posts: 'post.id' }});
  ```
- 
+
+## Contributing
+
+This project is open to contributions. Feel free to open an issue or a pull request.
+
 ## License
 
 MIT
