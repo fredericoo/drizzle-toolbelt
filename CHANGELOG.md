@@ -1,5 +1,16 @@
 # drizzle-toolbelt
 
+## 1.1.0
+
+### Minor Changes
+
+- 8e71ed1: Remove `aggregateRows`, made `aggregate` overload to handle the logic.
+
+### Patch Changes
+
+- 8e71ed1: `takeFirstOrThrow` is now a curry with a default error.
+  Simplified the API to no longer accept strings for error messages.
+
 ## 1.0.0
 
 ### Major Changes
