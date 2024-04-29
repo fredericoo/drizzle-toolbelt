@@ -108,7 +108,7 @@ const usersRows = await db.select({
 }).from(users)
 .leftJoin(posts.id, eq(posts.author_id, users.id))
 
-const usersWithPosts = aggregateRows({rows, pkey: 'id', fields: { posts: 'post.id' }});
+const usersWithPosts = aggregate({ rows, pkey: 'id', fields: { posts: 'post.id' }});
  ```
 
 ## Contributing
