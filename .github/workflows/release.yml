@@ -29,6 +29,9 @@ jobs:
       - name: 🔎 Run static checks 
         run: bun run check
 
+      - name: 📦 Build
+        run: bun run build
+
       - name: 🔑 Create .npmrc with tokens for publishing
         run: |
           cat << EOF > "$HOME/.npmrc"

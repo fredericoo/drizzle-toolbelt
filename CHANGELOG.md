@@ -1,5 +1,11 @@
 # drizzle-toolbelt
 
+## 1.1.1
+
+### Patch Changes
+
+- Now correctly serving output files
+
 ## 1.1.0
 
 ### Minor Changes
