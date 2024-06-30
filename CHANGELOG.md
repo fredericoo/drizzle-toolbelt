@@ -1,5 +1,11 @@
 # drizzle-toolbelt
 
+## 1.2.0
+
+### Minor Changes
+
+- Add `transform` method with data-first and data-last overloads
+
 ## 1.1.1
 
 ### Patch Changes

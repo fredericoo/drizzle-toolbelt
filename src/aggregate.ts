@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import type { Prettify } from './utils';
 
 /** More performant version of Object.values */
 function extractValues<T extends object>(obj: T) {
@@ -9,8 +10,6 @@ function extractValues<T extends object>(obj: T) {
 	return values;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type Prettify<T> = { [K in keyof T]: T[K] } & {};
 export type FlatKey<T extends Record<string, any>> = {
 	[K in keyof T]: NonNullable<T[K]> extends PropertyKey
 		? K
