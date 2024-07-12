@@ -111,7 +111,51 @@ const usersRows = await db.select({
 const usersWithPosts = aggregate({ rows, pkey: 'id', fields: { posts: 'post.id' }});
  ```
 
-## Contributing
+### `transform`
+
+Transforms rows in a slightly more performant way than spreading the properties (in-place changes). Data-first and data-last overloads are available.
+
+#### Data-first
+
+You may choose to pass rows in the arguments to call `transform` in a stand-alone way.
+
+```ts
+import { db } from "./db";
+import { users } from "./schema";
+import { transform } from "drizzle-toolbelt";
+
+const users = await db.select({
+  id: users.id,
+  name: users.name,
+}).from(users);
+
+const usersWithNameUppercase = transform({
+  rows,
+  fields: {
+    name: (row) => row.name.toUpperCase(),
+  }});
+```
+
+#### Data-last
+
+```ts
+import { db } from "./db";
+import { users } from "./schema";
+import { transform } from "drizzle-toolbelt";
+
+const users = await db.select({
+  id: users.id,
+  name: users.name,
+})
+  .from(users)
+  .then(transform({
+    fields: {
+      name: (row) => row.name.toUpperCase(),
+    }
+  }))
+```
+
+## Contributing
 
 This project is open to contributions. Feel free to open an issue or a pull request.
 
