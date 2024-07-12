@@ -8,6 +8,23 @@ Set of tools for [drizzle-orm](https://github.com/drizzle-team/drizzle-orm).
 npm i drizzle-toolbelt
 ```
 
+## Table of Contents
+
+- [Drizzle Toolbelt](#drizzle-toolbelt)
+  - [Installation](#installation)
+  - [Table of Contents](#table-of-contents)
+  - [Usage](#usage)
+    - [`takeFirst`](#takefirst)
+    - [`takeFirstOrThrow`](#takefirstorthrow)
+    - [`aggregate`](#aggregate)
+      - [Data-last](#data-last)
+      - [Data-first](#data-first)
+    - [`transform`](#transform)
+      - [Data-last](#data-last-1)
+      - [Data-first](#data-first-1)
+  - [Contributing](#contributing)
+  - [License](#license)
+
 ## Usage
 
 ### `takeFirst`
@@ -23,6 +40,8 @@ import { takeFirst } from "drizzle-toolbelt";
 const firstUserOrUndefined = await db.select().from(users)
  .then(takeFirst);
  ```
+
+---
 
 ### `takeFirstOrThrow`
 
@@ -59,9 +78,13 @@ const firstUserOrUnauthorized = await db
   .then(takeFirstOrUnauthorized);
 ```
 
+---
+
 ### `aggregate`
 
 Aggregates rows from a query.
+
+#### Data-last
 
 Example:
 ```ts
@@ -111,9 +134,32 @@ const usersRows = await db.select({
 const usersWithPosts = aggregate({ rows, pkey: 'id', fields: { posts: 'post.id' }});
  ```
 
+---
+
 ### `transform`
 
 Transforms rows in a slightly more performant way than spreading the properties (in-place changes). Data-first and data-last overloads are available.
+
+#### Data-last
+
+Example:
+```ts
+import { db } from "./db";
+import { users } from "./schema";
+import { transform } from "drizzle-toolbelt";
+
+const users = await db.select({
+  id: users.id,
+  name: users.name,
+})
+  .from(users)
+  .then(transform({
+    fields: {
+      name: (row) => row.name.toUpperCase(),
+    }
+  }))
+```
+
 
 #### Data-first
 
@@ -134,25 +180,6 @@ const usersWithNameUppercase = transform({
   fields: {
     name: (row) => row.name.toUpperCase(),
   }});
-```
-
-#### Data-last
-
-```ts
-import { db } from "./db";
-import { users } from "./schema";
-import { transform } from "drizzle-toolbelt";
-
-const users = await db.select({
-  id: users.id,
-  name: users.name,
-})
-  .from(users)
-  .then(transform({
-    fields: {
-      name: (row) => row.name.toUpperCase(),
-    }
-  }))
 ```
 
 ## Contributing
